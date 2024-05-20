@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - My Chicharon Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; 
+        }
+        header {
+            background-color: #87CEEB; 
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #4682B4; 
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+        nav a:hover {
+            background-color: #5A9; 
+            border-radius: 5px;
+        }
+        .banner {
+            background-image: url('download.jpg'); 
+            background-size: cover;
+            background-position: center;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .banner h1 {
+            font-size: 3em;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            background-color: #f8f9fa; 
+        }
+        .product {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product img {
+            max-width: 100%;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .product h2 {
+            font-size: 1.2em;
+            color: #333;
+        }
+        .product p {
+            color: #666;
+            margin: 10px 0;
+        }
+        .product button {
+            background-color: #87CEEB; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product button:hover {
+            background-color: #4682B4; 
+        }
+        .cart {
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .cart h2 {
+            color: #333;
+        }
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+        }
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        footer {
+            background-color: #87CEEB; 
+            text-align: center;
+            padding: 10px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+   
+    <nav>
+        <a href="Untitled-1.html">Home</a>
+        <a href="1111.html">Products</a>
+        <a href="aboutus.html">About Us</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+    <div class="banner">
+        <h1>Welcome to Don D's Chicharon Store</h1>
+    </div>
+    <div class="products">
+        <div class="product">
+            <img src="classicchicha.jpg" alt="Classic Chicharon">
+            <h2>Classic Chicharon</h2>
+            <p>₱100.00</p>
+            <button onclick="addToCart('Classic Chicharon', 100.00)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="spicychicha.jpg" alt="Spicy Chicharon">
+            <h2>Spicy Chicharon</h2>
+            <p>₱120.00</p>
+            <button onclick="addToCart('Spicy Chicharon', 120.00)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="garlicchicha.jpg" alt="Garlic Chicharon">
+            <h2>Garlic Chicharon</h2>
+            <p>₱120.00</p>
+            <button onclick="addToCart('Garlic Chicharon', 120.00)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="bbqchicha.jpg" alt="Barbecue Chicharon">
+            <h2>Barbecue Chicharon</h2>
+            <p>₱150.00</p>
+            <button onclick="addToCart('Barbecue Chicharon', 150.00)">Add to Cart</button>
+        </div>
+    </div>
+    <div class="cart">
+        <h2>Shopping Cart</h2>
+        <ul class="cart-items" id="cart-items"></ul>
+        <p>Total: ₱<span id="cart-total">0.00</span></p>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+
+    <script>
+        const cartItems = [];
+        const cartItemsElement = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+
+        function addToCart(productName, productPrice) {
+            const cartItem = {
+                name: productName,
+                price: productPrice
+            };
+            cartItems.push(cartItem);
+            updateCart();
+        }
+
+        function updateCart() {
+            cartItemsElement.innerHTML = '';
+            let total = 0;
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'cart-item';
+                listItem.textContent = `${item.name} - ₱${item.price.toFixed(2)}`;
+                cartItemsElement.appendChild(listItem);
+                total += item.price;
+            });
+            cartTotalElement.textContent = total.toFixed(2);
+        }
+
+        function checkout() {
+            alert('Thank you for your purchase!');
+            // Implement your checkout logic here, such as redirecting to a checkout page or processing the order.
+            cartItems.length = 0; // Clear the cart
+            updateCart(); // Update the cart display
+        }
+    </script>
+</body>
+</html>

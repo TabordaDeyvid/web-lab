@@ -6,7 +6,7 @@
     <title>Home - My Chicharon Store</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Georgia, serif;
             margin: 0;
             padding: 0;
             background-color: #f8f9fa; 
@@ -15,7 +15,7 @@
             background-color: #87CEEB; 
             padding: 20px;
             text-align: center;
-            color: white;
+            color: rgb(7, 1, 1);
         }
         nav {
             display: flex;
@@ -24,7 +24,7 @@
             padding: 10px;
         }
         nav a {
-            color: white;
+            color: rgb(7, 1, 1);
             text-decoration: none;
             padding: 10px 20px;
         }
@@ -40,7 +40,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
+            color: rgba(48, 138, 118, 0.781);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
         .banner h1 {
@@ -65,7 +65,7 @@
         }
         .product img {
             max-width: 100%;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #0c0404;
             padding-bottom: 15px;
             margin-bottom: 15px;
         }
@@ -119,6 +119,31 @@
             width: 100%;
             bottom: 0;
         }
+        .checkout-form {
+            margin-top: 20px;
+        }
+        .checkout-form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .checkout-form input, .checkout-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .checkout-form button {
+            background-color: #87CEEB;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .checkout-form button:hover {
+            background-color: #4682B4;
+        }
     </style>
 </head>
 <body>
@@ -130,7 +155,7 @@
         <a href="contact.html">Contact</a>
     </nav>
     <div class="banner">
-        <h1>Welcome to Don D's Chicharon Store</h1>
+        <h1>Irresistibly Crunchy Chicharon! Get Yours Now, Taste the Yum!</h1>
     </div>
     <div class="products">
         <div class="product">
@@ -162,13 +187,40 @@
         <h2>Shopping Cart</h2>
         <ul class="cart-items" id="cart-items"></ul>
         <p>Total: ₱<span id="cart-total">0.00</span></p>
-        <button onclick="checkout()">Checkout</button>
+        <button onclick="showCheckoutForm()">Checkout</button>
+    </div>
+
+    <div class="checkout-form" id="checkout-form" style="display: none;">
+        <h2>Please Answer the Form Before proceeding to checkout, Thank you!</h2>
+        <form id="form">
+            <label for="name">Name</label>
+            <input type="text" id="name" required>
+
+            <label for="address">Address</label>
+            <textarea id="address" required></textarea>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required>
+
+            <h3>Order Summary</h3>
+            <ul id="order-summary"></ul>
+            <p>Total: ₱<span id="order-total">0.00</span></p>
+
+            <button type="submit">Submit Order</button>
+        </form>
     </div>
 
     <script>
         const cartItems = [];
         const cartItemsElement = document.getElementById('cart-items');
         const cartTotalElement = document.getElementById('cart-total');
+        const checkoutFormElement = document.getElementById('checkout-form');
+        const orderSummaryElement = document.getElementById('order-summary');
+        const orderTotalElement = document.getElementById('order-total');
+        const formElement = document.getElementById('form');
 
         function addToCart(productName, productPrice) {
             const cartItem = {
@@ -192,10 +244,34 @@
             cartTotalElement.textContent = total.toFixed(2);
         }
 
-        function checkout() {
-            alert('Thank you for your purchase!');
-            cartItems.length = 0; // Clear the cart
-            updateCart(); 
+        function showCheckoutForm() {
+            checkoutFormElement.style.display = 'block';
+            updateOrderSummary();
+        }
+
+        function updateOrderSummary() {
+            orderSummaryElement.innerHTML = '';
+            let total = 0;
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - ₱${item.price.toFixed(2)}`;
+                orderSummaryElement.appendChild(listItem);
+                total += item.price;
+            });
+            orderTotalElement.textContent = total.toFixed(2);
+        }
+
+        formElement.addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Thank you for your purchase!\n\n' + getCartDetails());
+            cartItems.length = 0; 
+            updateCart();
+            checkoutFormElement.style.display = 'none';
+            formElement.reset();
+        });
+
+        function getCartDetails() {
+            return cartItems.map(item => `${item.name} - ₱${item.price.toFixed(2)}`).join('\n');
         }
     </script>
 </body>
